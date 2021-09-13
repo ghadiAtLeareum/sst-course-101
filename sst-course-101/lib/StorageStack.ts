@@ -1,15 +1,15 @@
 import * as sst from "@serverless-stack/resources";
 
-export default class StorageStack extends sst.Stack {
+export class StorageStack extends sst.Stack {
   // Public reference to the table
-  table: sst.Table;
+  notesTable: sst.Table;
   bucket: sst.Bucket;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
 
     // Create the DynamoDB table
-    this.table = new sst.Table(this, "Notes", {
+    this.notesTable = new sst.Table(this, "Notes", {
       fields: {
         userId: sst.TableFieldType.STRING,
         noteId: sst.TableFieldType.STRING,

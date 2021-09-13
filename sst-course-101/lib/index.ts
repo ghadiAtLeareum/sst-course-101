@@ -1,8 +1,11 @@
 import * as sst from "@serverless-stack/resources";
-import StorageStack from "./StorageStack";
-import ApiStack from "./ApiStack";
+import { StorageStack } from "./StorageStack";
+import { ApiStack } from "./ApiStack";
 
 export default function main(app: sst.App) {
-  new StorageStack(app, "storage");
-  new ApiStack(app, "api");
+  const storageStack = new StorageStack(app, "storage");
+
+  const apiStack = new ApiStack(app, "api", {
+    notesTable: storageStack.notesTable,
+  });
 }
