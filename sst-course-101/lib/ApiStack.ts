@@ -1,5 +1,4 @@
 import * as sst from "@serverless-stack/resources";
-import { StackProps } from "@serverless-stack/resources";
 import { StorageStack } from "../lib/StorageStack";
 
 interface MultiStackProps extends sst.StackProps {
@@ -24,12 +23,15 @@ export class ApiStack extends sst.Stack {
         },
       },
       routes: {
-        "POST   /notes": "src/create.handler",
+        "POST /add-note": {
+          function: {
+            srcPath: ".",
+            handler: "src/create.handler",
+            permissions: ["dynamodb:PutItem"],
+          },
+        },
       },
     });
-
-    // Allow the API to access the table
-    api.attachPermissions([this.notesTable]);
 
     // Show the API endpoint in the output
     this.addOutputs({

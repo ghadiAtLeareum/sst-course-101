@@ -13,17 +13,17 @@ export async function handler(
 ): Promise<APIGatewayProxyResult> {
   const headers = {
     "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Origin": "https://lereum.com",
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS,POST",
   };
   try {
     const body = JSON.parse(event.body!);
     const { content, attachment } = body;
     const params = {
-      TableName: "notes",
+      TableName: "dev-sst-course-101-Notes",
       Item: {
         // The attributes of the item to be created
-        userId: "123", // The id of the author
+        userId: "user-" + uuid.v4(), // The id of the author
         noteId: uuid.v4(), // A unique uuid
         content: content, // Parsed from request body
         attachment: attachment, // Parsed from request body
