@@ -1,5 +1,6 @@
 import * as sst from "@serverless-stack/resources";
 import { StorageStack } from "../lib/StorageStack";
+import { AuthorizationType } from "@aws-cdk/aws-apigateway";
 
 interface MultiStackProps extends sst.StackProps {
   notesTable: StorageStack["notesTable"];
@@ -12,11 +13,12 @@ export class ApiStack extends sst.Stack {
     super(scope, id, props);
 
     this.notesTable = props.notesTable;
-    this.client_create_API();
+    this.createApi;
   }
 
-  private client_create_API() {
+  createApi = () => {
     const api = new sst.ApiGatewayV1Api(this, "Api", {
+      defaultAuthorizationType: AuthorizationType.IAM,
       defaultFunctionProps: {
         environment: {
           TABLE_NAME: this.notesTable.tableName,
@@ -37,5 +39,6 @@ export class ApiStack extends sst.Stack {
     this.addOutputs({
       ApiEndpoint: api.url,
     });
-  }
+    return api;
+  };
 }
